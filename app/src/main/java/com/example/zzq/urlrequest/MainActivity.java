@@ -1,10 +1,14 @@
 package com.example.zzq.urlrequest;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
@@ -14,6 +18,9 @@ import com.example.zzq.urlrequest.reqbody.NewsBody;
 import com.example.zzq.urlrequest.service.ApiService;
 import com.zzq.netlib.base.App;
 import com.zzq.netlib.utils.Logger;
+import com.zzq.netlib.utils.UtilApp;
+
+import java.util.Stack;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,13 +46,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ((App)getApplication())
-                .getAppComponent()
-                .retrofit()
-                .create(ApiService.class)
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        int targetMemoryCacheSize = (int) (activityManager.getMemoryClass());
+        Logger.zzqLog().d("targetMemoryCacheSize = " + targetMemoryCacheSize);
+        ((App) getApplication()).getAppComponent().netManager().getRetrofitService(ApiService.class)
                 .getNews(new NewsBody(1))
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -54,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(String s) {
-                        Log.d(TAG, "onNext: ");
                         Logger.zzqLog().d("--next--");
                     }
 
@@ -69,6 +74,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        Logger.zzqLog().d(metrics.widthPixels+"    "+metrics.heightPixels+"   ");
     }
 
     @Override

@@ -84,7 +84,7 @@ public class Logger {
             if (st.getClassName().equals(this.getClass().getName())) {
                 continue;
             }
-            return who + "  " + st.toString() + "  " + "\n";
+            return who + "  " + st.toString() + " :  " ;
 //            return mClassName + "[ " + Thread.currentThread().getName() + ": " + st.getFileName() + ":"
 //                    + st.getClassName() + ":" + st.getMethodName() + ":" + st.getLineNumber() + " ]";
         }

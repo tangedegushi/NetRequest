@@ -15,6 +15,7 @@ import com.zzq.netlib.utils.UtilCheck;
 public class BaseApplication extends Application implements App{
 
     private AppDelegate appDelegate;
+    public static BaseApplication application;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -29,6 +30,7 @@ public class BaseApplication extends Application implements App{
     @Override
     public void onCreate() {
         super.onCreate();
+        application = this;
         appDelegate.onCreate(this);
     }
 

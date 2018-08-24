@@ -3,6 +3,7 @@ package com.zzq.netlib.base.delegate;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.zzq.netlib.BuildConfig;
 import com.zzq.netlib.base.AppLifecycle;
 import com.zzq.netlib.di.component.AppComponent;
 import com.zzq.netlib.di.component.DaggerAppComponent;
@@ -31,11 +32,15 @@ public class AppDelegate implements AppLifecycle {
                 .application(application)
                 .globalConfigurationModule(initGlobalConfig())
                 .build();
+        initActivityManager();
+    }
 
+    private void initActivityManager() {
+        appComponent.activityManager();
     }
 
     private GlobalConfigurationModule initGlobalConfig() {
-        return new GlobalConfigurationModule.Builder().baseUrl("http://cqfb.people.com.cn/wgainDev/WzwActiveService.svc/").build();
+        return new GlobalConfigurationModule.Builder().baseUrl(BuildConfig.baseUrl).build();
     }
 
     public AppComponent getAppComponent() {

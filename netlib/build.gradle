@@ -15,12 +15,14 @@ android {
     buildTypes {
         release {
             buildConfigField('boolean','isDebug','false')
+            buildConfigField('String','baseUrl','\"http://cqfb.people.com.cn/wgainDev/WzwActiveService.svc/\"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
             buildConfigField('boolean','isDebug','true')
+            buildConfigField('String','baseUrl','\"http://cqfb.people.com.cn/wgainDev/WzwActiveService.svc/\"')
         }
     }
 
@@ -33,6 +35,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api rootProject.ext.dependencies["appcompat-v7"]
+    api rootProject.ext.dependencies['design']
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

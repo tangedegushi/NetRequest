@@ -9,12 +9,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zzq.netlib.di.scope.AppScope;
 import com.zzq.netlib.http.log.HttpLoggingInterceptor;
+import com.zzq.netlib.http.net.INetManager;
+import com.zzq.netlib.http.net.NetManager;
 import com.zzq.netlib.utils.UtilFile;
 
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import io.rx_cache2.internal.RxCache;
@@ -37,13 +40,13 @@ public class NetModule {
 
     @AppScope
     @Provides
-    public GsonBuilder provideGsonBuilder() {
+    public static GsonBuilder provideGsonBuilder() {
         return new GsonBuilder();
     }
 
     @AppScope
     @Provides
-    public Gson provideGson(Application application, GsonBuilder builder, @Nullable ConfigurationGson config) {
+    public static Gson provideGson(Application application, GsonBuilder builder, @Nullable ConfigurationGson config) {
         if (config != null) {
             config.configGson(application, builder);
         }
@@ -52,7 +55,7 @@ public class NetModule {
 
     @AppScope
     @Provides
-    public HttpLoggingInterceptor provideLoggingInterceptor(@Nullable ConfigurationLoggingInterceptor config) {
+    public static HttpLoggingInterceptor provideLoggingInterceptor(@Nullable ConfigurationLoggingInterceptor config) {
         HttpLoggingInterceptor interceptor;
         if (BuildConfig.isDebug) {
             interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -67,13 +70,13 @@ public class NetModule {
 
     @AppScope
     @Provides
-    public OkHttpClient.Builder provideOkhttpBuilder() {
+    public static OkHttpClient.Builder provideOkhttpBuilder() {
         return new OkHttpClient.Builder();
     }
 
     @AppScope
     @Provides
-    public OkHttpClient provideOkhttp(Application application, OkHttpClient.Builder builder, @Nullable ConfigurationOkhttp config,
+    public static OkHttpClient provideOkhttp(Application application, OkHttpClient.Builder builder, @Nullable ConfigurationOkhttp config,
                                       HttpLoggingInterceptor logInterceptor, @Nullable List<Interceptor> interceptors) {
         builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
@@ -93,13 +96,13 @@ public class NetModule {
 
     @AppScope
     @Provides
-    public Retrofit.Builder provideRetrofitBuilder() {
+    public static Retrofit.Builder provideRetrofitBuilder() {
         return new Retrofit.Builder();
     }
 
     @AppScope
     @Provides
-    public Retrofit provideRetrofit(Application application, Retrofit.Builder builder, @Nullable ConfigurationRetrofit config, OkHttpClient client,
+    public static Retrofit provideRetrofit(Application application, Retrofit.Builder builder, @Nullable ConfigurationRetrofit config, OkHttpClient client,
                                     HttpUrl url, Gson gson) {
         builder.baseUrl(url)
                 .client(client)
@@ -121,7 +124,7 @@ public class NetModule {
      */
     @AppScope
     @Provides
-    public RxCache proviceRxcacheBuilder(Application application, @Nullable ConfigurationRxcache config, File cacheFileDir) {
+    public static RxCache proviceRxcacheBuilder(Application application, @Nullable ConfigurationRxcache config, File cacheFileDir) {
         RxCache.Builder builder = new RxCache.Builder();
         if (config != null) {
             return config.configRxcache(application, builder);
@@ -132,7 +135,7 @@ public class NetModule {
 
     @AppScope
     @Provides
-    public File provideFile(Application application, @Nullable ConfigurationCacheFileDir config) {
+    public static File provideFile(Application application, @Nullable ConfigurationCacheFileDir config) {
         File file = null;
         if (config != null) {
             file = new File(config.configCacheFile(application), "RxCache");
