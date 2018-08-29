@@ -172,17 +172,6 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
 
 
     //----------------------------弹窗显示相关方法---------------------------
-    public void showToat(@StringRes int resId) {
-        showToast(app.getResources().getString(resId));
-    }
-
-    public void showToast(String message) {
-        showToast(message, false);
-    }
-
-    public void showToast(String message, boolean isLong) {
-        Toast.makeText(app, message, isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
-    }
 
     public void showSnackBar(String message, boolean isLong) {
         if (getCurrentActivity() == null) {

@@ -112,7 +112,7 @@ public class UtilFile {
     }
 
 
-    public static String bytyToString(InputStream in) throws IOException {
+    public static String byteToString(InputStream in) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
         int num = 0;

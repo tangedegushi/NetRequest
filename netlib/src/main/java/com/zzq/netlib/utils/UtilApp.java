@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.support.annotation.StringRes;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.zzq.netlib.base.App;
 import com.zzq.netlib.base.BaseApplication;
@@ -67,16 +69,31 @@ public class UtilApp {
         return obtainAppComponent().activityManager();
     }
 
+    private static Toast toast;
     public static void showToast(@StringRes int resId){
-        getActivityManager().showToat(resId);
+        showToast(resId,false);
     }
 
     public static void showToast(String message){
-        getActivityManager().showToast(message,false);
+        showToast(message,false);
     }
 
     public static void showToast(String message,boolean isLong){
-        getActivityManager().showToast(message,isLong);
+        if (toast == null) {
+            toast = Toast.makeText(obtainAppComponent().application(),message,isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        } else {
+            toast.setText(message);
+        }
+        toast.show();
+    }
+
+    public static void showToast(@StringRes int resId,boolean isLong){
+        if (toast == null) {
+            toast = Toast.makeText(obtainAppComponent().application(),resId,isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT);
+        } else {
+            toast.setText(resId);
+        }
+        toast.show();
     }
 
     public static void showSnackbar(String message){
