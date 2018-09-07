@@ -3,6 +3,8 @@ package com.zzq.netlib.base;
 import android.app.Application;
 import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.squareup.leakcanary.LeakCanary;
 import com.zzq.netlib.base.delegate.AppDelegate;
 import com.zzq.netlib.di.component.AppComponent;
 import com.zzq.netlib.utils.UtilCheck;
@@ -30,6 +32,9 @@ public class BaseApplication extends Application implements App{
     @Override
     public void onCreate() {
         super.onCreate();
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
         application = this;
         appDelegate.onCreate(this);
     }

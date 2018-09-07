@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 import com.example.zzq.urlrequest.reqbody.NewsBody;
 import com.example.zzq.urlrequest.service.ApiService;
 import com.zzq.netlib.base.App;
+import com.zzq.netlib.mvp.IPresenter;
+import com.zzq.netlib.mvp.base.MvpBaseActivity;
 import com.zzq.netlib.utils.Logger;
 import com.zzq.netlib.utils.UtilApp;
 
@@ -27,7 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends MvpBaseActivity<NewsPresenter> {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -47,33 +50,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        int targetMemoryCacheSize = (int) (activityManager.getMemoryClass());
-        Logger.zzqLog().d("targetMemoryCacheSize = " + targetMemoryCacheSize);
-        ((App) getApplication()).getAppComponent().netManager().getRetrofitService(ApiService.class)
-                .getNews(new NewsBody(1))
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<String>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+//        int targetMemoryCacheSize = (int) (activityManager.getMemoryClass());
+//        Logger.zzqLog().d("targetMemoryCacheSize = " + targetMemoryCacheSize);
+//        ((App) getApplication()).getAppComponent().netManager().getRetrofitService(ApiService.class)
+//                .getNews(new NewsBody(1))
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(new Observer<String>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(String s) {
+//                        Logger.zzqLog().d("--next--");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
 
-                    }
+    }
 
-                    @Override
-                    public void onNext(String s) {
-                        Logger.zzqLog().d("--next--");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
+    @NonNull
+    @Override
+    public NewsPresenter onCreatePresenter() {
+        return new NewsPresenter(new NewsModel(),this);
     }
 
     @Override
@@ -103,5 +112,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLoadFail(Exception e) {
+
+    }
+
+    @Override
+    public <String>void onLoadSuccess(String msg) {
+        Logger.zzqLog().d(msg);
+    }
+
+    @Override
+    public <String>void onShowMessage(String t) {
+
     }
 }

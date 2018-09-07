@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import tech.linjiang.pandora.Pandora;
 
 /**
  * @auther tangedegushi
@@ -58,7 +59,7 @@ public class NetModule {
     public static HttpLoggingInterceptor provideLoggingInterceptor(@Nullable ConfigurationLoggingInterceptor config) {
         HttpLoggingInterceptor interceptor;
         if (BuildConfig.isDebug) {
-            interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+            interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS);
         } else {
             interceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE);
         }
@@ -80,7 +81,8 @@ public class NetModule {
                                       HttpLoggingInterceptor logInterceptor, @Nullable List<Interceptor> interceptors) {
         builder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
-                .addInterceptor(logInterceptor);
+                .addInterceptor(logInterceptor)
+                .addInterceptor(Pandora.get().getInterceptor());
 
         if (interceptors != null) {
             for (Interceptor interceptor : interceptors) {
@@ -146,27 +148,27 @@ public class NetModule {
         return UtilFile.makeDirs(file);
     }
 
-    interface ConfigurationGson {
+    public interface ConfigurationGson {
         void configGson(Context context, GsonBuilder builder);
     }
 
-    interface ConfigurationOkhttp {
+    public interface ConfigurationOkhttp {
         void configOkhttp(Context context, OkHttpClient.Builder builder);
     }
 
-    interface ConfigurationRetrofit {
+    public interface ConfigurationRetrofit {
         void configRetrofit(Context context, Retrofit.Builder builder);
     }
 
-    interface ConfigurationRxcache {
+    public interface ConfigurationRxcache {
         RxCache configRxcache(Context context, RxCache.Builder builder);
     }
 
-    interface ConfigurationLoggingInterceptor {
+    public interface ConfigurationLoggingInterceptor {
         void configLoggingInterceptor(HttpLoggingInterceptor interceptor);
     }
 
-    interface ConfigurationCacheFileDir {
+    public interface ConfigurationCacheFileDir {
         File configCacheFile(Application application);
     }
 }
