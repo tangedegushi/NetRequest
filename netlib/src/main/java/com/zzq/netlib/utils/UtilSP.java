@@ -155,7 +155,7 @@ public class UtilSP {
      * @param device
      * @param <T>
      */
-    public static <T> boolean saveDeviceData(String key, T device, @NonNull String spName) {
+    public static <T> boolean saveObjectBase64(String key, T device, @NonNull String spName) {
         initSp(spName);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {   //Device为自定义类
@@ -181,7 +181,7 @@ public class UtilSP {
      * @param <T>
      * @return
      */
-    public static <T> T getDeviceData(String key, String spName) {
+    public static <T> T getObjectBase64(String key, @NonNull String spName) {
         initSp(spName);
         T device = null;
         String productBase64 = currentSP.getString(key, null);

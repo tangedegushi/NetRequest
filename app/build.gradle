@@ -1,6 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'alias'
+            keyPassword '123456'
+            storeFile file('NetRequest.jks')
+            storePassword '123456'
+        }
+    }
+
     compileSdkVersion rootProject.ext.android['compileSdkVersion']
     defaultConfig {
         applicationId "com.example.zzq.urlrequest"
@@ -14,12 +23,25 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            applicationIdSuffix '.debug'
+        }
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${variant.name}_${getTime()}_${variant.versionName}"
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+}
+
+def getTime(){
+    new Date().format('yyyMMdd',TimeZone.getTimeZone('UTC'))
 }
 
 dependencies {
