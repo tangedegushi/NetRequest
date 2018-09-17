@@ -1,11 +1,11 @@
 package com.zzq.netlib.di.module;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.gson.GsonBuilder;
+import com.example.zzq.netlib.BuildConfig;
 import com.zzq.netlib.di.scope.AppScope;
+import com.zzq.netlib.error.ErrorHandle;
 import com.zzq.netlib.utils.UtilCheck;
 
 import java.util.List;
@@ -14,7 +14,6 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
 
 
 /**
@@ -31,8 +30,9 @@ public class GlobalConfigurationModule {
     private NetModule.ConfigurationRxcache configRxcache;
     private NetModule.ConfigurationLoggingInterceptor configLogging;
     private NetModule.ConfigurationCacheFileDir configCacheFile;
+    private ErrorHandle errorHandle;
 
-    public GlobalConfigurationModule(Builder builder) {
+    private GlobalConfigurationModule(Builder builder) {
         this.baseUrl = builder.baseUrl;
         this.configGson = builder.configGson;
         this.configOkhttp = builder.configOkhttp;
@@ -40,6 +40,7 @@ public class GlobalConfigurationModule {
         this.configRxcache = builder.configRxcache;
         this.configLogging = builder.configLogging;
         this.configCacheFile = builder.configCacheFile;
+        this.errorHandle = builder.errorHandle;
     }
 
     @AppScope
@@ -90,11 +91,17 @@ public class GlobalConfigurationModule {
         return null;
     }
 
+    @AppScope
+    @Provides
+    @Nullable
+    public NetModule.ConfigurationCacheFileDir provideConfigCacheFile() {
+        return configCacheFile;
+    }
 
     @AppScope
     @Provides
-    public NetModule.ConfigurationCacheFileDir provideConfigCacheFile() {
-        return configCacheFile;
+    public ErrorHandle provideErrorHandle() {
+        return errorHandle == null ? ErrorHandle.DEFAULT_HANDLE : errorHandle;
     }
 
     public static final class Builder {
@@ -105,10 +112,14 @@ public class GlobalConfigurationModule {
         private NetModule.ConfigurationRxcache configRxcache;
         private NetModule.ConfigurationLoggingInterceptor configLogging;
         private NetModule.ConfigurationCacheFileDir configCacheFile;
+        private ErrorHandle errorHandle;
 
         public Builder() {
             if (configGson == null) {
                 configGson = (context, builder) -> builder.serializeNulls();
+            }
+            if (baseUrl == null) {
+                baseUrl = HttpUrl.parse(BuildConfig.baseUrl);
             }
         }
 
@@ -180,9 +191,18 @@ public class GlobalConfigurationModule {
             return this;
         }
 
+        public Builder processErrorHandle(ErrorHandle errorHandle) {
+            this.errorHandle = errorHandle;
+            return this;
+        }
+
         public GlobalConfigurationModule build() {
             return new GlobalConfigurationModule(this);
         }
 
+    }
+
+    public static GlobalConfigurationModule getDefaultInstance(){
+        return new GlobalConfigurationModule.Builder().build();
     }
 }

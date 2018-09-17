@@ -9,6 +9,7 @@ import io.reactivex.Observable;
  */
 public interface IModel<D> {
 
-    Observable<D> loadConmonData();
+    Observable<D> loadCommonData();
+    void onDestroy();
 
 }

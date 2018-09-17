@@ -19,9 +19,7 @@ public class NewsPresenter extends BasePresenter<NewsModel,IView> {
 
     @Override
     public void onCreate(LifecycleOwner owner) {
-        mModel.loadConmonData()
-                .compose(transformer())
-                .as(bindLifecycle())
+        commonObservable(mModel.loadCommonData())
                 .subscribe(s -> Logger.zzqLog().d("this is the net data"));
     }
 }

@@ -7,6 +7,7 @@ import com.zzq.netlib.di.module.AppModule;
 import com.zzq.netlib.di.module.GlobalConfigurationModule;
 import com.zzq.netlib.di.module.NetModule;
 import com.zzq.netlib.di.scope.AppScope;
+import com.zzq.netlib.error.ErrorHandle;
 import com.zzq.netlib.http.net.INetManager;
 import com.zzq.netlib.di.ActivityManager;
 
@@ -30,6 +31,8 @@ public interface AppComponent {
     INetManager netManager();
 
     ActivityManager activityManager();
+
+    ErrorHandle errorHandle();
 
     //获取缓存目录，便于清除缓存目录下的数据
     File cacheFile();

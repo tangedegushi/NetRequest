@@ -40,7 +40,7 @@ public class AppDelegate implements AppLifecycle {
     }
 
     private GlobalConfigurationModule initGlobalConfig() {
-        return new GlobalConfigurationModule.Builder().baseUrl(BuildConfig.baseUrl).build();
+        return GlobalConfigurationModule.getDefaultInstance();
     }
 
     public AppComponent getAppComponent() {

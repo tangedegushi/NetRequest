@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BaseDialog" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="BaseDialog_Bottom_Anim">
+        <item name="android:windowEnterAnimation">@anim/netlib_bottom_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/netlib_bottom_exit_anim</item>
+    </style>
+    <style name="BaseDialog_top_Anim">
+        <item name="android:windowEnterAnimation">@anim/netlib_top_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/netlib_top_exit_anim</item>
+    </style>
+</resources>

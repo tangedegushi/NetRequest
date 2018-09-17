@@ -15,14 +15,14 @@ android {
     buildTypes {
         release {
             buildConfigField('boolean','isDebug','false')
-            buildConfigField('String','baseUrl','\"http://cqfb.people.com.cn/wgainDev/WzwActiveService.svc/\"')
+            buildConfigField('String','baseUrl','\"http://www.wanandroid.com/\"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
             buildConfigField('boolean','isDebug','true')
-            buildConfigField('String','baseUrl','\"http://cqfb.people.com.cn/wgainDev/WzwActiveService.svc/\"')
+            buildConfigField('String','baseUrl','\"http://www.wanandroid.com/\"')
         }
     }
 
