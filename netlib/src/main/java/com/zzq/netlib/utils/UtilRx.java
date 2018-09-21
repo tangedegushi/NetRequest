@@ -29,6 +29,6 @@ public class UtilRx {
                 .doOnSubscribe(disposable -> view.onShowLoading())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(view::onHideLoading);
+                .doFinally(view::onHideLoading);
     }
 }

@@ -9,6 +9,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
 
 import java.net.ConnectException;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class ExceptionHandleUtil {
             ex = new ResponseException(e, ResponseException.PARSE_ERROR);
             ex.message = "解析错误";
             return ex;
-        } else if (e instanceof ConnectException) {
+        } else if (e instanceof ConnectException || e instanceof SocketException) {
             ex = new ResponseException(e, ResponseException.CONNECT_ERROR);
             ex.message = "连接失败";
             return ex;
