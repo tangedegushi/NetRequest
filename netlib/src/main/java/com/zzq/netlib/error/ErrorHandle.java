@@ -37,6 +37,8 @@ public interface ErrorHandle {
                     case ResponseException.PARSE_ERROR:
                     case ResponseException.SSL_ERROR:
                     case ResponseException.UNKNOWN:
+                    case ResponseException.ON_MAIN_THREAD:
+                    case ResponseException.PERMISSION_DENIED:
                         if (BuildConfig.isDebug) {
                             UtilApp.showToast(exception.message,true);
                             Logger.zzqLog().e("the error code = " + exception.getErrorCode() + ",the error message is = " + exception.message);

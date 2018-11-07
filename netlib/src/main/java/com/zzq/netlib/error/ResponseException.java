@@ -39,6 +39,16 @@ public class ResponseException extends RuntimeException {
      */
     public static final int UNKNOW_HOST_ERROR = 1007;
 
+    /**
+     * 在主线程中请求网络
+     */
+    public static final int ON_MAIN_THREAD = 1008;
+
+    /**
+     * 未添加网络权限
+     */
+    public static final int PERMISSION_DENIED = 1009;
+
     private int errorCode;
     public String message;
 

@@ -117,7 +117,7 @@ public class UtilFile {
         byte[] buf = new byte[1024];
         int num = 0;
         while ((num = in.read(buf)) != -1) {
-            out.write(buf, 0, buf.length);
+            out.write(buf, 0, num);
         }
         String result = out.toString();
         out.close();

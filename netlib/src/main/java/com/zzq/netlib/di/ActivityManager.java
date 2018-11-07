@@ -78,7 +78,7 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
      * @return
      */
     public Activity getCurrentActivity() {
-        return mCurrentActivity != null ? mCurrentActivity : null;
+        return mCurrentActivity;
     }
 
     /**

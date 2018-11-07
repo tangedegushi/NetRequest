@@ -1,6 +1,7 @@
 package com.zzq.netlib.error;
 
 import android.net.ParseException;
+import android.os.NetworkOnMainThreadException;
 
 import com.google.gson.JsonParseException;
 import com.zzq.netlib.utils.Logger;
@@ -61,13 +62,25 @@ public class ExceptionHandleUtil {
             ex = new ResponseException(e, ResponseException.SSL_ERROR);
             ex.message = "证书验证失败";
             return ex;
-        } else if (e instanceof ConnectTimeoutException || e instanceof java.net.SocketTimeoutException) {
+        } else if (e instanceof ConnectTimeoutException) {
             ex = new ResponseException(e, ResponseException.TIMEOUT_ERROR);
-            ex.message = "连接超时";
+            ex.message = "请求连接超时";
+            return ex;
+        } else if (e instanceof java.net.SocketTimeoutException) {
+            ex = new ResponseException(e, ResponseException.TIMEOUT_ERROR);
+            ex.message = "服务器响应超时";
             return ex;
         } else if (e instanceof UnknownHostException) {
             ex = new ResponseException(e, ResponseException.UNKNOW_HOST_ERROR);
             ex.message = "UnknownHostException";
+            return ex;
+        } else if (e instanceof NetworkOnMainThreadException) {
+            ex = new ResponseException(e, ResponseException.ON_MAIN_THREAD);
+            ex.message = "在主线程中请求网络";
+            return ex;
+        } else if (e instanceof SecurityException) {
+            ex = new ResponseException(e, ResponseException.PERMISSION_DENIED);
+            ex.message = "未添加网络权限";
             return ex;
         } else {
             ex = new ResponseException(e, ResponseException.UNKNOWN);

@@ -41,7 +41,7 @@ public class UtilSP {
         if (TextUtils.isEmpty(spName)) {
             if (defaultSP == null) {
                 Context context = UtilApp.obtainAppComponent().application();
-                currentSP = context.getSharedPreferences(spName, Context.MODE_PRIVATE);
+                currentSP = context.getSharedPreferences(SP_NAME_DEFAULT, Context.MODE_PRIVATE);
                 defaultSP = currentSP;
                 spMap.put(SP_NAME_DEFAULT, currentSP);
             } else {
@@ -49,11 +49,11 @@ public class UtilSP {
             }
             return;
         }
-        currentSP = spMap.get(currentSP);
+        currentSP = spMap.get(spName);
         if (currentSP == null) {
             Context context = UtilApp.obtainAppComponent().application();
             currentSP = context.getSharedPreferences(spName, Context.MODE_PRIVATE);
-            spMap.put(SP_NAME_DEFAULT, currentSP);
+            spMap.put(spName, currentSP);
         }
 
     }
